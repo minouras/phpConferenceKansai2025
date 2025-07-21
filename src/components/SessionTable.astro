@@ -1,0 +1,63 @@
+---
+interface Props {
+  sessions: Session[];
+}
+
+interface Session {
+  title: string;
+  summary: string;
+  slide: string;
+  memos: string[]; 
+}
+
+const { sessions } = Astro.props;
+---
+
+<table>
+  <tbody class="border-[1px] border-[#333] border-collapse">
+    {sessions.map((session) => (
+      <tr>
+			<th class="bg-[#c3d3f8] py-2 px-[2%] text-lg" colspan="2" set:html={session.title}></th>
+		</tr>
+		<tr>
+			<td class="term">要約</td>
+			<td class="cont" set:html={session.summary}></td>
+		</tr>
+		<tr>
+			<td class="term">資料</td>
+			<td class="cont">
+        {session.slide ? <a class="text-blue-500 underline" href={session.slide} target="_blank">スライド資料</a> : '-'}
+      </td>
+		</tr>
+    <tr>
+			<td class="term">振り返りメモ</td>
+			<td class="cont">
+        <ul class="list-disc pl-2">
+          {
+            session.memos.map((memo) => (
+              <li>{memo}</li>
+            ))
+            }
+        </ul>
+      </td>
+		</tr>
+    ))}
+  </tbody>
+</table>
+
+<style>
+  td {
+    padding: 1rem;
+    border: 1px solid #333;
+  }
+
+  .term {
+    width: 23%;
+    font-weight: 500;
+    vertical-align: baseline;
+  }
+
+  .cont {
+    font-size: 14px;
+  }
+</style>
